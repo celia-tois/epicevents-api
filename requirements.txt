@@ -1,6 +1,7 @@
 asgiref==3.6.0
 Django==4.1.4
 djangorestframework==3.12.4
+djangorestframework-simplejwt==4.7.2
 psycopg2==2.9.5
 pytz==2022.7
 sqlparse==0.4.3
