@@ -47,7 +47,7 @@ class Contract(models.Model):
         on_delete=models.SET_NULL,
         limit_choices_to={'role': 'SALES'}
         )
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="client_contract")
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_signed = models.BooleanField()
@@ -65,7 +65,7 @@ class Event(models.Model):
         ('FINISHED', 'Finished'),
     ]
     
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, limit_choices_to={'client_contract__is_signed': True})
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     support_contact = models.ForeignKey(
