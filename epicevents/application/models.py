@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import AbstractBaseUser
 from decimal import Decimal
+from .managers import CustomUserManager
 
 
 class User(AbstractBaseUser):
@@ -20,7 +20,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
-    objects = UserManager()
+    objects = CustomUserManager()
 
 
 class Client(models.Model):
@@ -65,7 +65,17 @@ class Event(models.Model):
         ('FINISHED', 'Finished'),
     ]
     
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, limit_choices_to={'client_contract__is_signed': True})
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        limit_choices_to={'client_contract__is_signed': True},
+        related_name="client_event",
+        )
+    contract = models.ForeignKey(
+        Contract,
+        on_delete=models.CASCADE,
+        limit_choices_to={'is_signed': True},
+    )
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     support_contact = models.ForeignKey(
