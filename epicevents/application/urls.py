@@ -1,6 +1,11 @@
 from rest_framework import routers
 from django.urls import path, include
-from application.views import UserViewset, ClientViewset, ContractViewset, EventViewset
+from application.views import (
+    UserViewset,
+    ClientViewset,
+    ContractViewset,
+    EventViewset
+    )
 
 
 router = routers.SimpleRouter()

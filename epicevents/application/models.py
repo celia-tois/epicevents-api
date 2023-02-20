@@ -16,7 +16,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     email = models.EmailField(db_index=True, unique=True, max_length=250)
     role = models.CharField(choices=ROLE_CHOICES, max_length=20)
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
@@ -45,7 +45,11 @@ class Contract(models.Model):
         on_delete=models.PROTECT,
         limit_choices_to={'role': 'SALES'}
         )
-    client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name="client_contract")
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.PROTECT,
+        related_name="client_contract"
+        )
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_signed = models.BooleanField()
@@ -62,7 +66,7 @@ class Event(models.Model):
         ('CREATED', 'Created'),
         ('FINISHED', 'Finished'),
     ]
-    
+
     client = models.ForeignKey(
         Client,
         on_delete=models.PROTECT,
