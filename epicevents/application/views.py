@@ -20,7 +20,7 @@ class ClientViewset(ModelViewSet):
         if self.request.user.role == 'SUPPORT':
             return self.queryset.filter(client_event__support_contact=self.request.user)
         elif self.request.user.role == 'SALES':
-            return self.queryset.filter(client_contract__sales_contact=self.request.user)
+            return self.queryset.filter(sales_contact_id=self.request.user)
         return self.queryset
 
 
@@ -30,9 +30,7 @@ class ContractViewset(ModelViewSet):
     serializer_class = ContractSerializer
 
     def perform_create(self, serializer):
-        client_id = self.request.data.get('client')
-        client = Client.objects.get(id=client_id)
-        serializer.save(sales_contact=client.sales_contact)
+        serializer.save(sales_contact=self.request.user)
 
     def get_queryset(self):
         if self.request.user.role == 'SALES':
