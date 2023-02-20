@@ -1,3 +1,4 @@
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from application.serializers import UserSerializer, ClientSerializer, ContractSerializer, EventSerializer
@@ -15,6 +16,8 @@ class ClientViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, ClientPermission]
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email']
 
     def get_queryset(self):
         if self.request.user.role == 'SUPPORT':
@@ -28,6 +31,8 @@ class ContractViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, ContractPermission]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['client__first_name', 'client__last_name', 'client__email', 'date_created', 'amount']
 
     def perform_create(self, serializer):
         serializer.save(sales_contact=self.request.user)
@@ -42,6 +47,8 @@ class EventViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, EventPermission]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['client__first_name', 'client__last_name', 'client__email', 'event_date']
 
     def get_queryset(self):
         if self.request.user.role == 'SUPPORT':
