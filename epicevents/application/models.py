@@ -34,8 +34,7 @@ class Client(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     sales_contact = models.ForeignKey(
         User,
-        null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         limit_choices_to={'role': 'SALES'}
         )
 
@@ -43,11 +42,10 @@ class Client(models.Model):
 class Contract(models.Model):
     sales_contact = models.ForeignKey(
         User,
-        null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         limit_choices_to={'role': 'SALES'}
         )
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="client_contract")
+    client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name="client_contract")
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_signed = models.BooleanField()
@@ -67,21 +65,20 @@ class Event(models.Model):
     
     client = models.ForeignKey(
         Client,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         limit_choices_to={'client_contract__is_signed': True},
         related_name="client_event",
         )
     contract = models.ForeignKey(
         Contract,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         limit_choices_to={'is_signed': True},
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     support_contact = models.ForeignKey(
         User,
-        null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         limit_choices_to={'role': 'SUPPORT'}
         )
     event_status = models.CharField(choices=STATUS_CHOICES, max_length=20)
