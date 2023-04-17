@@ -16,11 +16,18 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     email = models.EmailField(db_index=True, unique=True, max_length=250)
     role = models.CharField(choices=ROLE_CHOICES, max_length=20)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
     objects = CustomUserManager()
+
+    def has_module_perms(self, app_label):
+        return self.is_staff
+
+    def has_perm(self, perm, obj=None):
+        return self.is_staff
 
 
 class Client(models.Model):

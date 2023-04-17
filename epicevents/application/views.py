@@ -21,6 +21,14 @@ class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def perform_create(self, serializer):
+        user_role = serializer.validated_data.get('role', '')
+        if user_role == 'MANAGEMENT':
+            is_staff = True
+        else:
+            is_staff = False
+        serializer.save(is_staff=is_staff)
+
 
 class ClientViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, ClientPermission]
