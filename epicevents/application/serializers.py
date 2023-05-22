@@ -7,7 +7,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'role', 'password')
-        read_only_fields = ('is_staff', )
+        read_only_fields = ('is_staff', 'is_superuser')
 
     def validate_password(self, value: str) -> str:
         """
