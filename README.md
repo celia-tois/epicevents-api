@@ -10,7 +10,7 @@ Epic Events is a Customer Relationship Management (CRM) software allowing the us
 2. Clone the repository:
 
 ```
-$ git clone https://github.com/CeliaTois/CeliaTOIS_12_27122022.git
+$ git clone https://github.com/celia-tois/epicevents-api.git
 ```
 
 3. Go to the project folder:
